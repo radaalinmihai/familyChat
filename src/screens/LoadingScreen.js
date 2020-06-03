@@ -6,9 +6,9 @@ export default function Loading({navigation}) {
   useEffect(() => {
     (async () => {
       const name = await getItem('@name');
-      if (name != null) navigation.replace('Chat');
+      if (name != null) navigation.replace('ChatList');
       else navigation.replace('GetName');
     })();
-  });
+  }, []);
   return <ActivityIndicator size="large" />;
 }

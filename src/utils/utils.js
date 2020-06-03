@@ -32,4 +32,9 @@ async function removeItem(name) {
   }
 }
 
-export {getItem, storeItem, removeItem};
+async function removeAll() {
+  await AsyncStorage.clear();
+  console.log('Cleared storage');
+}
+
+export {getItem, storeItem, removeItem, removeAll};

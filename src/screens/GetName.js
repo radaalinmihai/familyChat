@@ -4,13 +4,17 @@ import {View, Keyboard, Text} from 'react-native';
 import {TextInput, TouchableNativeFeedback} from 'react-native-gesture-handler';
 import MaterialCommunity from 'react-native-vector-icons/MaterialCommunityIcons';
 import {storeItem} from '../utils/utils';
+import firestore from '@react-native-firebase/firestore';
 
 export default function GetName({navigation}) {
-  const onSubmit = async values => {
+  const onSubmit = values => {
     console.log(values);
-    await storeItem('@name', values.name);
+    firestore()
+      .collection('users')
+      .doc(values.name)
+      .set({}).then(async () => await storeItem('@name', values.name));
     Keyboard.dismiss();
-    navigation.navigate('Chat');
+    navigation.navigate('ChatList');
   };
   return (
     <View

@@ -5,6 +5,7 @@ import GetName from './src/screens/GetName';
 import {StatusBar} from 'react-native';
 import Chat from './src/screens/ChatScreen';
 import Loading from './src/screens/LoadingScreen';
+import ChatList from './src/screens/ChatList';
 const Stack = createStackNavigator();
 
 export default function App() {
@@ -23,6 +24,7 @@ export default function App() {
           options={{animationTypeForReplace: 'pop'}}
           component={Chat}
         />
+        <Stack.Screen name="ChatList" component={ChatList} />
         <Stack.Screen name="Loading" component={Loading} />
       </Stack.Navigator>
     </NavigationContainer>
