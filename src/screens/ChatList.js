@@ -1,25 +1,47 @@
-import React, {useEffect, useState} from 'react';
-import {Text, View} from 'react-native';
-import {removeAll} from '../utils/utils';
+import React, {useEffect, useState, useLayoutEffect} from 'react';
+import {Text, View, SectionList, StyleSheet} from 'react-native';
+import {removeAll, getItem} from '../utils/utils';
 import firestore from '@react-native-firebase/firestore';
+import RenderItem from '../components/Chat/renderItem';
 
-export default function ChatList() {
+export default function ChatList({navigation}) {
   const [usersList, setList] = useState([]);
+  const [name, setName] = useState(null);
   useEffect(() => {
+    (async () => {
+      const name = await getItem('@name');
+      setName(name);
+    })();
     firestore()
       .collection('users')
+      .doc(name)
       .get()
       .then(snapshot => {
-        snapshot.forEach(s => setList(oldUsers => [...oldUsers, s.ref.id]));
+        console.log(snapshot.data());
       });
     /* removeAll(); */
   }, []);
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerShown: true,
+      title: `Welcome ${name}`,
+    });
+  }, [navigation, name]);
+  const separator = () => <View style={styles.separator} />;
   console.log(usersList);
   return (
-    <View>
-      {usersList.map((user, i) => (
-        <Text key={i}>{user}</Text>
-      ))}
-    </View>
+    <SectionList
+      sections={usersList}
+      renderItem={({item}) => <RenderItem item={item} />}
+      keyExtractor={(item, index) => index.toString()}
+      ItemSeparatorComponent={separator}
+    />
   );
 }
+
+const styles = StyleSheet.create({
+  separator: {
+    height: 1,
+    backgroundColor: '#00CF91',
+  },
+});
