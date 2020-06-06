@@ -3,6 +3,7 @@ import {Text, View, SectionList, StyleSheet} from 'react-native';
 import {removeAll, getItem} from '../utils/utils';
 import firestore from '@react-native-firebase/firestore';
 import RenderItem from '../components/Chat/renderItem';
+import SearchHeaderList from '../components/Chat/searchHeaderList';
 
 export default function ChatList({navigation}) {
   const [usersList, setList] = useState([]);
@@ -17,7 +18,7 @@ export default function ChatList({navigation}) {
       .doc(name)
       .get()
       .then(snapshot => {
-        console.log(snapshot.data());
+        console.log(snapshot.exists);
       });
     /* removeAll(); */
   }, []);
@@ -25,6 +26,12 @@ export default function ChatList({navigation}) {
     navigation.setOptions({
       headerShown: true,
       title: `Welcome ${name}`,
+      headerStyle: {
+        backgroundColor: '#00CF91',
+      },
+      headerTitleStyle: {
+        color: 'white',
+      },
     });
   }, [navigation, name]);
   const separator = () => <View style={styles.separator} />;
@@ -35,6 +42,7 @@ export default function ChatList({navigation}) {
       renderItem={({item}) => <RenderItem item={item} />}
       keyExtractor={(item, index) => index.toString()}
       ItemSeparatorComponent={separator}
+      ListHeaderComponent={SearchHeaderList}
     />
   );
 }
