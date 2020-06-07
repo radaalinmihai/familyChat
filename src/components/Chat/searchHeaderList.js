@@ -1,30 +1,24 @@
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
-import {Formik} from 'formik';
+import {View, StyleSheet} from 'react-native';
 import {TextInput} from 'react-native-gesture-handler';
 
-export default function SearchHeaderList() {
+export default function SearchHeaderList({setSearch, search}) {
   return (
-    <Formik onSubmit={() => console.log('yes')} initialValues={{search: ''}}>
-      {({values, handleBlur, handleChange, handleSubmit}) => (
-        <View style={styles.searchWrapper}>
-          <TextInput
-            value={values.search}
-            onBlur={handleBlur('search')}
-            onChangeText={handleChange('search')}
-            placeholder="Search.."
-            returnKeyType='search'
-          />
-        </View>
-      )}
-    </Formik>
+    <View style={styles.searchWrapper}>
+      <TextInput
+        value={search}
+        onChangeText={search => setSearch(search)}
+        placeholder="Search.."
+        returnKeyType="search"
+      />
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   searchWrapper: {
     paddingHorizontal: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: '#D1D3D4'
-  }
+    borderBottomWidth: 2,
+    borderBottomColor: '#D1D3D4',
+  },
 });
